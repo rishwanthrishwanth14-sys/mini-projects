@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Edit Student</title>
+     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f1f3d 0%, #1a3a6e 50%, #1e4d8c 100%);
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 16px;
+        }
+
+        h1 {
+            font-size: 26px;
+            color: #ffffff;
+            margin-bottom: 24px;
+            text-align: center;
+            letter-spacing: 0.03em;
+        }
+
+        form {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+            width: 100%;
+            max-width: 480px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #4a5a78;
+            margin-bottom: 6px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid #dde4f0;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #0f1f3d;
+            background: #f0f4fb;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
+            margin-bottom: 16px;
+        }
+
+        input:focus, select:focus {
+            border-color: #4facde;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(79,172,222,0.15);
+        }
+
+        input::placeholder {
+            color: #b0bbd4;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(120deg, #2f6eb5, #4facde);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 0.02em;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 4px 18px rgba(47,110,181,0.35);
+            margin-bottom: 12px;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 26px rgba(47,110,181,0.4);
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            background: #f0f4fb;
+            color: #2f6eb5;
+            border: 1.5px solid #dde4f0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        a:hover {
+            background: #e2eaf8;
+            border-color: #2f6eb5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="editContainer" id="editSection">
+
+        <h1>Edit Student</h1>
+        <form id="editForm">
+
+            <input type="text" id="name" name="name">
+
+            <select id="gender" name="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="others">Others</option>
+            </select>
+
+            <input type="number" id="phoneNumber" name="phoneNumber">
+
+            <input type="date" id="dob" name="dob">
+
+            <input type="email" id="email" name="email">
+
+            <input type="password" id="password" name="password">
+
+            <button type="submit">Update Student</button>
+
+
+            <a href="/students">Student List Form</a>
+        </form>
+
+        <script>
+            const params = new URLSearchParams(window.location.search);
+
+            const id = params.get("id");
+            const action = params.get("action");
+
+            console.log(id);
+            console.log(action);
+
+            if (action === "edit") {
+                document.getElementById("editSection").style.display = "block";
+            }
+
+            fetch(`/api/student/${id}`)
+                .then(res => res.json())
+                .then(student => {
+                    document.getElementById("name").value = student.name;
+                    document.getElementById("gender").value = student.gender;
+                    document.getElementById("phoneNumber").value = student.phoneNumber;
+                    document.getElementById("dob").value = student.dob.substring(0, 10);
+                    document.getElementById("email").value = student.email;
+                    document.getElementById("password").value = student.password;
+
+                });
+
+            document.getElementById("editForm")
+                .addEventListener("submit", async (e) => {
+                    e.preventDefault();
+
+                    const data = {
+                        name: document.getElementById("name").value,
+                        gender: document.getElementById("gender").value,
+                        phoneNumber: document.getElementById("phoneNumber").value,
+                        dob: document.getElementById("dob").value,
+                        email: document.getElementById("email").value,
+                        password: document.getElementById("password").value,
+                    };
+
+                    const response =
+                        await fetch(`/api/student/${id}`, {
+                            method: "put",
+                            headers: {
+                                "content-type": "application/json"
+                            },
+                            body: JSON.stringify(data)
+                        });
+
+                    if (response.ok) {
+                        alert("student update");
+                        window.location.href = "/students";
+                    } else {
+                        const errors = await response.json();
+                        alert(errors.join("\n"));
+                    }
+                });
+        </script>
+
+</body>
+
+</html>

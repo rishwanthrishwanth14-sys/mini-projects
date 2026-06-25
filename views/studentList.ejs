@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Student list</title>
+    <style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#0f172a,#1e3a8a,#2563eb);
+    padding:40px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.25);
+    animation:fadeIn 0.8s ease;
+}
+
+h1{
+    text-align:center;
+    color:#1e3a8a;
+    margin-bottom:25px;
+    font-size:34px;
+}
+
+.add-button{
+    display:inline-block;
+    text-decoration:none;
+    background:linear-gradient(135deg,#10b981,#059669);
+    color:white;
+    padding:12px 20px;
+    border-radius:10px;
+    font-weight:bold;
+    margin-bottom:20px;
+    transition:0.3s;
+}
+
+.add-button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(16,185,129,0.4);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    overflow:hidden;
+    border-radius:15px;
+}
+
+thead{
+    background:#1e3a8a;
+    color:white;
+}
+
+th{
+    padding:15px;
+    text-align:center;
+}
+
+td{
+    padding:12px;
+    text-align:center;
+    border-bottom:1px solid #e5e7eb;
+}
+
+tr:nth-child(even){
+    background:#f8fafc;
+}
+
+tr:hover{
+    background:#dbeafe;
+    transition:0.3s;
+}
+
+td a{
+    text-decoration:none;
+    background:#2563eb;
+    color:white;
+    padding:8px 12px;
+    border-radius:8px;
+    margin-right:5px;
+    font-size:14px;
+}
+
+td a:hover{
+    background:#1d4ed8;
+}
+
+button{
+    border:none;
+    background:#ef4444;
+    color:white;
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:14px;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#dc2626;
+    transform:scale(1.05);
+}
+
+.no-Data{
+    text-align:center;
+    margin-top:20px;
+    color:red;
+    font-weight:bold;
+    font-size:18px;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+</style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Student List</h1>
+
+        <a href="/student" class="add-button">student Admission Page </a>
+
+        <table id="studentTable">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Phone.No</th>
+                    <th>Date of Birth</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody id="studentBody">
+
+            </tbody>
+        </table>
+        <div id="noData" class="no-Data"></div>
+    </div>
+
+    <script>
+        async function loadStudent() {
+
+            try {
+                const response = await fetch("/api/students");
+                const students = await response.json();
+
+                const tbody = document.getElementById("studentBody");
+                const noData = document.getElementById("noData");
+
+                tbody.innerHTML = "";
+
+                if (students.length === 0) {
+                    noData.innerHTML = "no student found";
+                    return;
+                }
+
+                let dataRowHtml = "";
+
+                students.forEach(student => {
+
+                    dataRowHtml += `
+                    <tr>
+                        <td>${student.id}</td>
+                        <td>${student.name}</td>
+                        <td>${student.gender}</td>
+                        <td>${student.phoneNumber}</td>
+                         <td>
+                            ${new Date(student.dob).toLocaleDateString("en-IN",{ year: "numeric", month: "short", day: "2-digit" } )}
+                        </td>
+                        <td>${student.email}</td>
+                        <td>${student.password}</td>
+                       
+                        <td><a href="/student/edit?id=${student.id}&action=edit">Edit</a></td>
+                            
+                        <td><button onclick="deleteStudent(${student.id})"> Delete </button></td>
+
+                    </tr>
+                    `;
+                });
+
+                tbody.innerHTML = dataRowHtml
+
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        loadStudent();
+
+    </script>
+
+    <script>
+
+    async function deleteStudent(id){
+
+        console.log("Delete id:", id);
+
+    const confirmDelete = confirm("Are you sure want to delete this student?");
+
+    if(!confirmDelete){
+        return;
+    }
+
+    try{
+
+        const response = await fetch(`/api/student/${id}`,{
+            method:"DELETE"
+        });
+
+        const result = await response.json();
+
+        alert(result.message);
+
+        loadStudent(); // table refresh
+
+    }catch(error){
+        console.error(error);
+        alert("Delete failed");
+    }
+}
+</script>
+</body>
+
+</html>
