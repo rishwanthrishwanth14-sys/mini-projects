@@ -1,0 +1,109 @@
+<html>
+
+<head>
+    <title>Login</title>
+
+   <style>
+    *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#142850,#234d8c);
+    flex-direction: column;
+}
+
+.loginpage{
+    width:400px;
+    background:#fff;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 15px 35px rgba(0,0,0,.2);
+}
+
+.loginpage h2{
+    text-align:center;
+    color:#183a6b;
+    margin-bottom:30px;
+    font-size:30px;
+    font-weight:bold;
+}
+
+.loginpage label{
+    display:block;
+    margin-bottom:8px;
+    color:#1d3d72;
+    font-size:14px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.loginpage input{
+    width:100%;
+    padding:14px 16px;
+    margin-bottom:22px;
+    border:1px solid #d8dfea;
+    border-radius:10px;
+    background:#eef3fb;
+    font-size:16px;
+    outline:none;
+    transition:.3s;
+}
+
+.loginpage input:focus{
+    border-color:#234d8c;
+    background:#fff;
+    box-shadow:0 0 8px rgba(35,77,140,.3);
+}
+
+.loginpage input::placeholder{
+    color:#999;
+}
+
+.loginpage button{
+    width:100%;
+    padding:14px;
+    background:#234d8c;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.loginpage button:hover{
+    background:#183a6b;
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(0,0,0,.25);
+}
+ </style>
+</head>
+
+<body>
+
+    <h2>Login</h2>
+    <div class="loginpage">
+        <form action="/api/login" method="POST">
+
+        <label>Email:</label>
+        <input type="email" name="email" placeholder="Enter your email" required>
+
+        <label>Password:</label>
+        <input type="password" name="password" placeholder="Enter your password" required>
+
+        <button type="submit">Log in</button>
+        </form>
+    </div>
+</body>
+
+</html>

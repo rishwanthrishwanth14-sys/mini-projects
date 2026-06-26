@@ -1,172 +1,181 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Student Admission</title>
-         <style>
-            * {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-            }
 
-            body {
-                min-height: 100vh;
-                background: linear-gradient(135deg, #0f1f3d 0%, #1a3a6e 50%, #1e4d8c 100%);
-                font-family: 'Segoe UI', sans-serif;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 40px 16px;
-                flex-direction: column;
-            }
-
-            h1 {
-                font-size: 26px;
-                color: #ffffff;
-                margin-bottom: 24px;
-                text-align: center;
-                letter-spacing: 0.03em;
-            }
-
-            form {
-                background: #ffffff;
-                padding: 40px;
-                border-radius: 20px;
-                box-shadow: 0 8px 40px rgba(0,0,0,0.25);
-                width: 100%;
-                max-width: 480px;
-            }
-
-            label {
-                display: block;
-                font-size: 12px;
-                font-weight: 600;
-                text-transform: uppercase;
-                letter-spacing: 0.05em;
-                color: #4a5a78;
-                margin-bottom: 6px;
-            }
-
-            input, select {
-                width: 100%;
-                padding: 11px 14px;
-                border: 1.5px solid #dde4f0;
-                border-radius: 10px;
-                font-size: 14px;
-                color: #0f1f3d;
-                background: #f0f4fb;
-                outline: none;
-                transition: border-color 0.2s, box-shadow 0.2s;
-                appearance: none;
-                -webkit-appearance: none;
-            }
-
-            input:focus, select:focus {
-                border-color: #4facde;
-                background: #fff;
-                box-shadow: 0 0 0 3px rgba(79,172,222,0.15);
-            }
-
-            input::placeholder {
-                color: #b0bbd4;
-            }
-
-            button[type="submit"] {
-                width: 100%;
-                padding: 13px;
-                background: linear-gradient(120deg, #2f6eb5, #4facde);
-                color: #fff;
-                border: none;
-                border-radius: 10px;
-                font-size: 15px;
-                font-weight: 600;
-                cursor: pointer;
-                letter-spacing: 0.02em;
-                transition: transform 0.15s, box-shadow 0.15s;
-                box-shadow: 0 4px 18px rgba(47,110,181,0.35);
-                margin-bottom: 12px;
-            }
-
-            button[type="submit"]:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 26px rgba(47,110,181,0.4);
-            }
-
-            a.button {
-                display: block;
-                text-align: center;
-                padding: 12px;
-                background: #f0f4fb;
-                color: #2f6eb5;
-                border: 1.5px solid #dde4f0;
-                border-radius: 10px;
-                font-size: 14px;
-                font-weight: 600;
-                text-decoration: none;
-                transition: background 0.15s, border-color 0.15s;
-            }
-
-            a.button:hover {
-                background: #e2eaf8;
-                border-color: #2f6eb5;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>Student Details</h1>
-
-        <form action="/api/student" method="post">
-
-            <label>Name:</label><br>
-            <input type="text" name="name" required>
-            <br><br>
-
-            <label>Gender:</label><br>
-            <select name="gender" required>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Others">Others</option>
-            </select>
-            <br><br>
-
-            <label>Phone Number:</label><br>
-            <input type="number" name="phoneNumber" required>
-            <br><br>
-
-            <label>Date of Birth:</label><br>
-            <input type="date" name="dob" required>
-            <br><br>
-
-            <lable>Email:</lable><br>
-            <input type="email" name="email" required>
-            <br><br>
-
-            <label>Password:</label><br>
-            <input type="password" name="password" required>
-            <br><br>
-
-            <label>Confirm Password</label><br>
-            <input type="password" name="confirmPassword" required>
-            <br><br>
-
-            <button type="submit">Submit Details</button>
-            <a href="/students" class="button">list of Student</a>
-
-
-
-        </form>
-    </body>
-    <script>
-        function checkPassword(){
-            let password = document.getElementById("password").value;
-            let confirmPassword = document.getElementById("confirmPassword");// yen inga matum value edukala//
-
-            if(password !== confirmPassword.value) {
-                confirmPassword.setCustomValidatity("Your passwords does not match")
-            }else{
-                confirmPassword.setCustomValidatity("");
-            }
-
+<head>
+    <title>Student Admission</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-    </script>
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f1f3d 0%, #1a3a6e 50%, #1e4d8c 100%);
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 16px;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 26px;
+            color: #ffffff;
+            margin-bottom: 24px;
+            text-align: center;
+            letter-spacing: 0.03em;
+        }
+
+        form {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 480px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #4a5a78;
+            margin-bottom: 6px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid #dde4f0;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #0f1f3d;
+            background: #f0f4fb;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #4facde;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(79, 172, 222, 0.15);
+        }
+
+        input::placeholder {
+            color: #b0bbd4;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(120deg, #2f6eb5, #4facde);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 0.02em;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 4px 18px rgba(47, 110, 181, 0.35);
+            margin-bottom: 12px;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 26px rgba(47, 110, 181, 0.4);
+        }
+
+        a.button {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            background: #f0f4fb;
+            color: #2f6eb5;
+            border: 1.5px solid #dde4f0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        a.button:hover {
+            background: #e2eaf8;
+            border-color: #2f6eb5;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Student Details</h1>
+
+    <form action="/api/student" method="post">
+
+        <label>Name:</label><br>
+        <input type="text" name="name" required />
+        <br><br>
+
+        <label>Gender:</label><br>
+        <select name="gender" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="others">Others</option>
+        </select>
+        <br><br>
+
+        <label>Phone Number:</label><br>
+        <input type="number" name="phoneNumber" required>
+        <br><br>
+
+        <label>Date of Birth:</label><br>
+        <input type="date" name="dob" required>
+        <br><br>
+
+        <label>Email:</label><br>
+        <input type="email" name="email" required>
+        <br><br>
+
+        <label>Password:</label><br>
+        <input type="password" id="password" name="password" required>
+        <br><br>
+
+        <label>Confirm Password</label><br>
+        <input type="password" id="confirmPassword" name="confirmPassword" required >
+        <br><br>
+
+        <button type="submit">Submit Details</button>
+        <a href="/students" class="button">list of Student</a>
+
+
+
+    </form>
+</body>
+<script>
+
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirmPassword");
+
+    password.addEventListener("input", checkPassword);
+    confirmPassword.addEventListener("input", checkPassword);
+
+    function checkPassword() {
+        if (password.value !== confirmPassword.value) {
+            confirmPassword.setCustomValidity("passwords does not match")
+        } else {
+            confirmPassword.setCustomValidity("");
+        }
+
+    }
+</script>
+
 </html>

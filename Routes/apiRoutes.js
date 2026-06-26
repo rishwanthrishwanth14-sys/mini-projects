@@ -4,6 +4,7 @@ const router = express.Router();
 const db = require("../config/db");
 
 
+
 const gender_options = ["male", "female", "others"]
 
 function validateStudent(data) {
@@ -14,6 +15,7 @@ function validateStudent(data) {
         error.push("name must be contain atleast 2 characters");
     }
     if (!(data.gender && gender_options.includes(data.gender))) {
+        console.log(data.gender)
         error.push("invalid gender");
     }
     if (!(data.phoneNumber && data.phoneNumber.length === 10 && /^\d+$/.test(data.phoneNumber))) {
@@ -110,7 +112,7 @@ router.put("/student/:id", (req, res) => {
 
     const errors = validateStudent(data)
     if (errors.length > 0)
-        return res.status(400).json(error);
+        return res.status(400).json(errors);
 
     const sql = `
      update student 
@@ -169,6 +171,51 @@ router.delete("/student/:id", (req, res) => {
         }
 
     );
+});
+
+router.post("/login", (req, res) => {
+
+    const { email, password } = req.body;
+
+    const sql = "SELECT * FROM student WHERE email = ? AND password = ?";
+
+    db.query(sql, [email, password], (err, result) => {
+
+        if (err) {
+            return res.status(500).send(err);
+            
+        }
+
+       if (result.length > 0) {
+
+    req.session.user = {
+        id: result[0].id,
+        name: result[0].name,
+        email: result[0].email
+    };
+
+    return res.redirect("/studenthome");
+
+} else {
+
+    return res.send("Invalid Email or Password");
+
+}
+
+    });
+
+});
+
+router.get("/logout", (req, res) => {
+
+    req.session.destroy((err) => {
+
+        res.clearCookie("connect.sid");
+
+        res.redirect("/");
+
+    });
+
 });
 
 
